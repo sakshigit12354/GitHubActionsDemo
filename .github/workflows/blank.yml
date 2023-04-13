@@ -35,3 +35,4 @@ jobs:
 
     - name: check
       run: deck sync -s new-kong.yaml --kong-addr http://34.125.228.150:8001
+      #jewhd
