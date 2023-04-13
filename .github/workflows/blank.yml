@@ -20,9 +20,9 @@ jobs:
         tar -xf inso-linux-3.12.0.tar.xz
 
     - name: Lint OpenAPI Spec
-      run: ./inso lint spec apiops.yml
+      run: ./inso lint spec apiops.yaml
     - name: Generate kong.yaml
-      run: ./inso generate config apiops.yml --type declarative -o kong.yaml
+      run: ./inso generate config apiops.yaml --type declarative -o kong.yaml
     - name: open kong.yaml
       run: cat /home/runner/work/ApiActionDemo/ApiActionDemo/kong.yaml
     - name: install deck CLI
