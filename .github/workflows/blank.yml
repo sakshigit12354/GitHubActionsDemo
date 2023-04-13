@@ -24,7 +24,7 @@ jobs:
     - name: Generate kong.yaml
       run: ./inso generate config apiops.yaml --type declarative -o kong.yaml
     - name: open kong.yaml
-      run: cat /home/runner/work/ApiActionDemo/ApiActionDemo/kong.yaml
+      run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong.yaml
     - name: install deck CLI
       run: |
         curl -sL https://github.com/kong/deck/releases/download/v1.17.2/deck_1.17.2_linux_amd64.tar.gz -o deck.tar.gz
