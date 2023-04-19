@@ -31,7 +31,7 @@ jobs:
         sudo cp /tmp/deck /usr/local/bin/
 
     - name: check  # Validate the Kong configuration using deck CLI
-      run: deck validate -s /home/runner/work/ApiActionDemo/ApiActionDemo/kong.yaml
+      run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong.yaml
 
     - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
       run: |
