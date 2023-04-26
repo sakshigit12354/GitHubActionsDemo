@@ -54,4 +54,4 @@ jobs:
         run: |          
           portal deploy --preserve default 
         env:
-          KONG_ADMIN_URL: https://34.125.50.28:8444 
+          KONG_ADMIN_URL: http://34.125.50.28:8001
