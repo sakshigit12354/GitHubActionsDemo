@@ -38,7 +38,7 @@ jobs:
           deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong.yaml --output-file new-kong.yaml
 
     - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
-      run: deck sync -s new-kong.yaml --kong-addr https://34.125.50.28:8444 --tls-skip-verify
+      run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.kong_admin_addr }} --tls-skip-verify
   publish-customer-api-to-portal:  # Publish the API to the dev portal
     name: Publish OAS to dev portal
     needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
@@ -54,4 +54,4 @@ jobs:
         run: |          
           portal deploy --preserve default 
         env:
-          KONG_ADMIN_URL: http://34.125.50.28:8001
+          KONG_ADMIN_URL: ${{ secrets.kong_admin_addr }}
