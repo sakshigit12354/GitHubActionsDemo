@@ -54,4 +54,4 @@ jobs:
         run: |          
           portal deploy --preserve default 
         env:
-          KONG_ADMIN_URL: ${{ KONG_ADMIN_ADDR }}
+          KONG_ADMIN_URL: ${{ secrets.KONG_ADMIN_ADDR }}
