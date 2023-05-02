@@ -1,0 +1,37 @@
+_format_version: "3.0"
+info:
+  title: Sample API
+  version: 1.0.0
+  description: A sample API for testing Kong rate limiting plugin
+
+servers:
+  - url: https://httpbin.org
+
+paths:
+  /ip:
+    get:
+      tags:
+        - IP
+      summary: Get IP address
+      responses:
+        '200':
+          description: OK
+        '429':
+          description: Too Many Requests
+      x-kong-plugins:
+        - name: rate-limiting
+          config:
+            minute: 2
+            policy: local
+            hide_client_headers: true
+            redis_host: redis
+            redis_port: 6379
+            redis_timeout: 2000
+            fault_tolerant: true
+            redis_database: 0
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
