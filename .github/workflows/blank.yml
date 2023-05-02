@@ -34,7 +34,7 @@ jobs:
       run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong.yaml
 
     - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
-      run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
+      run: deck sync -s kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
   publish-customer-api-to-portal:  # Publish the API to the dev portal
     name: Publish OAS to dev portal
     needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
