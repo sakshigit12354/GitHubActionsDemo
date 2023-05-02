@@ -1,18 +1,22 @@
-openapi: 3.0.0
+openapi: "3.0.0"
 info:
-  title: Example API Specification
-  version: 1.0.0
+  title: "API"
+  version: "1.0.0"
+  contact:
+    name: "Your Name"
+    email: "your.email@example.com"
+  description: "API description"
 servers:
-  - url: http://httpbin.org
+  - url: "https://httpbin.org"
 paths:
   /ip:
     get:
-      summary: Get IP address
-      operationId: getIp
-      description: Retrieves the IP address of the requesting client
+      summary: "Get IP address"
+      tags:
+        - "IP"
       responses:
-        200:
-          description: Successful response
+        '200':
+          description: "Successful response"
           content:
             application/json:
               schema:
@@ -20,39 +24,26 @@ paths:
                 properties:
                   origin:
                     type: string
-        429:
-          description: API rate limit exceeded
-      x-kong-plugins:
-        - name: rate-limiting
-          config:
-            day: null
-            error_code: 429
-            error_message: API rate limit exceeded
-            fault_tolerant: true
-            header_name: null
-            hide_client_headers: false
-            hour: null
-            limit_by: consumer
-            minute: 2
-            month: null
-            path: null
-            policy: local
-            redis_database: 0
-            redis_host: null
-            redis_password: null
-            redis_port: 6379
-            redis_server_name: null
-            redis_ssl: false
-            redis_ssl_verify: false
-            redis_timeout: 2000
-            redis_username: null
-            second: null
-            year: null
-    x-kong-route:
-      regex_priority: 0
-      strip_path: true
-      paths:
-        - /address
-      methods:
-        - GET
-      https_redirect_status_code: 426
+        '429':
+          description: "Rate limit exceeded"
+      x-rate-limit:
+        description: "Rate limit settings"
+        type: object
+        properties:
+          minute:
+            type: integer
+            example: 2
+          fault_tolerant:
+            type: boolean
+            example: true
+        required:
+          - minute
+          - fault_tolerant
+      security:
+        - api_key: []
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: X-API-Key
+      in: header
