@@ -21,9 +21,9 @@ jobs:
     - name: Lint OpenAPI Spec  # Lint the OpenAPI spec using Insomnia CLI
       run: ./inso lint spec apiops.yaml
     - name: Generate kong.yaml  # Generate Kong configuration in declarative format
-      run: ./inso generate config apiops.yaml --type declarative -o kong.yaml --kongVersion 3.0
+      run: ./inso generate config apiops.yaml --type declarative -o kong_gen.yaml --kongVersion 3.0
     - name: open kong.yaml  # Display the contents of the generated Kong configuration
-      run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong.yaml
+      run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
     - name: install deck CLI  # Install deck CLI for syncing Kong configuration
       run: |
         curl -sL https://github.com/kong/deck/releases/download/v1.17.2/deck_1.17.2_linux_amd64.tar.gz -o deck.tar.gz
@@ -31,14 +31,10 @@ jobs:
         sudo cp /tmp/deck /usr/local/bin/
 
     - name: check  # Validate the Kong configuration using deck CLI
-      run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong.yaml
-
-    - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
-      run: |
-          deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong.yaml --output-file new-kong.yaml
+      run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
 
     - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
-      run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
+      run: deck sync -s kong_gen.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
   publish-customer-api-to-portal:  # Publish the API to the dev portal
     name: Publish OAS to dev portal
     needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
