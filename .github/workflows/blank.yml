@@ -33,8 +33,12 @@ jobs:
     - name: check  # Validate the Kong configuration using deck CLI
       run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong.yaml
 
+    - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
+      run: |
+          deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong.yaml --output-file new-kong.yaml
+
     - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
-      run: deck sync -s kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
+      run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
   publish-customer-api-to-portal:  # Publish the API to the dev portal
     name: Publish OAS to dev portal
     needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
