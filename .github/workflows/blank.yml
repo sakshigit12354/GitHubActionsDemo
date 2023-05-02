@@ -52,6 +52,6 @@ jobs:
         run: npm install -g kong-portal-cli
       - name: Deploy to dev portal
         run: |          
-          portal deploy --preserve default 
+          portal deploy --preserve default -k
         env:
           KONG_ADMIN_URL: ${{ secrets.KONG_ADMIN_ADDR }}
