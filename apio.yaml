@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: Example API Specification
+  version: 1.0.0
+servers:
+  - url: http://httpbin.org
+paths:
+  /ip:
+    get:
+      summary: Get IP address
+      operationId: getIp
+      description: Retrieves the IP address of the requesting client
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  origin:
+                    type: string
+        429:
+          description: API rate limit exceeded
+      x-kong-plugins:
+        - name: rate-limiting
+          config:
+            day: null
+            error_code: 429
+            error_message: API rate limit exceeded
+            fault_tolerant: true
+            header_name: null
+            hide_client_headers: false
+            hour: null
+            limit_by: consumer
+            minute: 2
+            month: null
+            path: null
+            policy: local
+            redis_database: 0
+            redis_host: null
+            redis_password: null
+            redis_port: 6379
+            redis_server_name: null
+            redis_ssl: false
+            redis_ssl_verify: false
+            redis_timeout: 2000
+            redis_username: null
+            second: null
+            year: null
+    x-kong-route:
+      regex_priority: 0
+      strip_path: true
+      paths:
+        - /address
+      methods:
+        - GET
+      https_redirect_status_code: 426
