@@ -16,7 +16,7 @@ jobs:
     - name: Install Insomnia CLI  # Install Insomnia CLI for linting and generating Kong configuration
       run: |
          wget https://github.com/Kong/insomnia/releases/download/lib%403.14.0/inso-linux-3.14.0.tar.xz
-         tar -xf inso-linux-3.14.0.tar.xz
+         tar -xf inso-linux-3.14.0-beta.1.tar.xz
 
     - name: Lint OpenAPI Spec  # Lint the OpenAPI spec using Insomnia CLI
       run: ./inso lint spec apio.yaml
@@ -33,12 +33,12 @@ jobs:
     - name: check  # Validate the Kong configuration using deck CLI
       run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
 
-    - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
-      run: |
-          deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong_gen.yaml --output-file new-kong.yaml
+#     - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
+#       run: |
+#           deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong_gen.yaml --output-file new-kong.yaml
 
     - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
-      run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
+      run: deck sync -s kong_gen.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
   publish-customer-api-to-portal:  # Publish the API to the dev portal
     name: Publish OAS to dev portal
     needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
