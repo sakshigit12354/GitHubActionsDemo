@@ -12,18 +12,3 @@ paths:
       responses:
         '200':
           description: OK
-  /addr:
-    get:
-      operationId: getAddress
-      summary: Get Address
-      responses:
-        '426':
-          description: HTTPS Upgrade Required
-      servers:
-        - url: https://{proxyHost}
-          variables:
-            proxyHost:
-              description: The host of the proxy server
-              default: httpbin.org
-              enum:
-                - httpbin.org
