@@ -15,8 +15,8 @@ jobs:
 
     - name: Install Insomnia CLI  # Install Insomnia CLI for linting and generating Kong configuration
       run: |
-         wget https://github.com/Kong/insomnia/releases/download/lib%403.14.0-beta.0/inso-linux-3.14.0-beta.0.tar.xz
-         tar -xf inso-linux-3.14.0-beta.0.tar.xz
+         wget https://github.com/Kong/insomnia/releases/download/lib%403.14.0/inso-linux-3.14.0.tar.xz
+         tar -xf inso-linux-3.14.0.tar.xz
 
     - name: Lint OpenAPI Spec  # Lint the OpenAPI spec using Insomnia CLI
       run: ./inso lint spec api.yaml
