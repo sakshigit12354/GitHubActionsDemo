@@ -21,7 +21,7 @@ jobs:
     - name: Lint OpenAPI Spec  # Lint the OpenAPI spec using Insomnia CLI
       run: ./inso lint spec apio.yaml
     - name: Generate kong.yaml  # Generate Kong configuration in declarative format
-      run: ./inso generate config apio.yaml --type declarative -o kong_gen.yaml --kong-config-version 3.0
+      run: ./inso generate config apio.yaml --type declarative -o kong_gen.yaml --kong-version 3.0
     - name: open kong.yaml  # Display the contents of the generated Kong configuration
       run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
     - name: install deck CLI  # Install deck CLI for syncing Kong configuration
