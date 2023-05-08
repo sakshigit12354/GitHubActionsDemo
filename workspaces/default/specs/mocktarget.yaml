@@ -9,7 +9,7 @@ info:
 servers:
   - url: http://httpbin.org/anything
 paths:
-  /MarginsCalculator:
+  /MarginsCalculators:
     post:
       tags:
         - MarginsCalculator
