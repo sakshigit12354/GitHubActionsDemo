@@ -7,10 +7,10 @@ info:
     email: menaheme@tase.co.il
   version: v1
 servers:
-  - url: http://httpbin.org/anything
+  - url: https://mocktarget.apigee.net/json
     description: Development server
 paths:
-  /MarginsCalculators:
+  /MarginsCalculator/LCRMReport:
     post:
       tags:
         - MarginsCalculator
@@ -62,7 +62,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-  /MarginsCalculator:
+  /MarginsCalculator/LCRMReportFile:
     get:
       tags:
         - MarginsCalculator
