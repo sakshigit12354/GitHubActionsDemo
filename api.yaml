@@ -7,7 +7,7 @@ info:
     email: menaheme@tase.co.il
   version: v1
 servers:
-  - url: /Margin.API
+  - url: http://httpbin.org/anything
 paths:
   /MarginsCalculator/LCRMReport:
     post:
