@@ -9,7 +9,7 @@ info:
 servers:
   - url: http://httpbin.org/anything
 paths:
-  /MarginsCalculator/LCRMReport:
+  /MarginsCalculator:
     post:
       tags:
         - MarginsCalculator
@@ -61,7 +61,7 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-  /MarginsCalculator/LCRMReportFile:
+  /MarginsCalculator:
     get:
       tags:
         - MarginsCalculator
