@@ -7,7 +7,7 @@ on:
 
 jobs:
   buildjob:
-    if: ${{ APPNAME }}
+    if: ${{ vars.APPNAME }}
     runs-on: ubuntu-latest
     steps:
       - name: Print Hello World Again
