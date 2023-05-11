@@ -72,7 +72,7 @@ jobs:
 #             --data "$payload" \
 #             -k
   service_contract:
-    name: Create Contracts 
+    name: Create Contract 
 #     needs: application_automation
 #     if: ${{ vars.APPNAME }}
     runs-on: ubuntu-latest
