@@ -79,7 +79,7 @@ jobs:
     steps:
       - name: Step 1
         run: |
-            PAYLOAD=$(echo "{\"name\": \"application-registration\", \"config\": {\"auto_approve\": false, \"description\": \"any discription\", \"display_name\": \"MyService_API\"}}")
+            PAYLOAD=$(echo "{\"name\": \"application-registration\",\"config\": {\"auto_approve\": false, \"description\": \"any description\", \"display_name\": \"MyService_APIsxa\"}}")
             curl -X POST https://ec2-34-217-81-88.us-west-2.compute.amazonaws.com:8444/services/MyService_API/plugins -d "$PAYLOAD" -k
        
 
