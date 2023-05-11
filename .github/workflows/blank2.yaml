@@ -6,7 +6,7 @@ on:
       - main  # Trigger the deployment when pushing to the main branch
 
 jobs:
-  build:
+  buildjob:
     if: ${{ APPNAME }}
     runs-on: ubuntu-latest
     steps:
