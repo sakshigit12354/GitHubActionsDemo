@@ -71,9 +71,14 @@ jobs:
             --header 'Content-Type: application/json' \
             --data "$payload" \
             -k
-
-
-
+  service_contract:
+    name: Create Contracts 
+    needs: application_automation
+    if: ${{ vars.APPNAME }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1
+        run: echo "Hello from service contract"
 
 
 
