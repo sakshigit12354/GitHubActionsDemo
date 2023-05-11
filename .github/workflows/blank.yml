@@ -1,4 +1,4 @@
-name: Demo to Delpoy OAS to Kong # Specify the name of the deployme
+name: Demo to Delpoy OAS to Kong # Specify the name of the deployment
 
 on:
   push:
