@@ -1,0 +1,13 @@
+name: Demo # Specify the name of the deploymen
+
+on:
+  push:
+    branches:
+      - main  # Trigger the deployment when pushing to the main branch
+
+jobs:
+  enable-registration-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1
+        run: echo "Hello from Step 1"
