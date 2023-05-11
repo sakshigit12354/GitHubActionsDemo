@@ -17,5 +17,5 @@ jobs:
             SERVICE_NAME=$(echo $SERVICE | cut -d':' -f1)
             SERVICE_ID=$(echo $SERVICE | cut -d':' -f2)
             PAYLOAD=$(echo "{\"name\": \"application-registration\", \"config\": {\"auto_approve\": false, \"description\": \"any discription\", \"display_name\": \"${SERVICE_NAME}\"}}")
-            curl -X POST https://ec2-34-217-81-88.us-west-2.compute.amazonaws.com:8444/services/${SERVICE_NAME}|${SERVICE_ID}/plugins -d "$PAYLOAD"
+            curl -X POST https://ec2-34-217-81-88.us-west-2.compute.amazonaws.com:8444/services/${SERVICE_NAME}|${SERVICE_ID}/plugins -d "$PAYLOAD" -k
           done
