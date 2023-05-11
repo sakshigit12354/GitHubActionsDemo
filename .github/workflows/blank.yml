@@ -69,7 +69,7 @@ jobs:
             --url ${{ secrets.KONG_ADMIN_ADDR }}/applications \
             --header 'Content-Type: application/json' \
             --data '{
-                "name": "myapp",
+                "name": ${{ APPNAME }},
                 "redirect_uri": "http://mocktarget.apigee.net/json",
                 "developer": {
                     "id": "13740635-14f5-4d12-9f0c-2e585f6ada2f"
