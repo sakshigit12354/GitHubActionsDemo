@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main  # Trigger the deployment when pushing to the main branch
+env:
+  APPNAME: myapp
+  APPREDIRECT: http://mocktarget.apigee.net/json
+  APPDEVELOPERID: 13740635-14f5-4d12-9f0c-2e585f6ada2f
 
 jobs:
   OAS_To_KONG:
@@ -63,16 +67,19 @@ jobs:
     needs: publish-customer-api-to-portal  # Make sure the OAS_To_KONG job is completed before running this job
     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
     steps:
-      - name: Create Kong application
+      - name: Deploy to Kong
         run: |
+          payload=$(echo "{\"name\": \"$APPNAME\", \"redirect_uri\": \"$APPREDIRECT\", \"developer\": {\"id\": \"$APPDEVELOPERID\"}}" | tr -d '\n')
           curl --request POST \
             --url https://ec2-34-217-81-88.us-west-2.compute.amazonaws.com:8444/applications \
             --header 'Content-Type: application/json' \
-            --data '{
-                "name": ${{ vars.APPNAME }},
-                "redirect_uri": ${{ vars.APPREDIRECT }},
-                "developer": {
-                    "id": ${{ vars.APPDEVELOPERID }}
-                }
-            }' -k
+            --data "$payload" \
+            -k
+
+
+
+
+
+
+
         
