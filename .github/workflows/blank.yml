@@ -63,7 +63,7 @@ jobs:
     needs: publish-customer-api-to-portal  # Make sure the OAS_To_KONG job is completed before running this job
     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
     steps:
-      - name: Find Developer ID
+      - name: Find Developer ID and deploy to kong
         run: |
              NAME="${{ vars.APPDEVELOPERNAME }}"
              NAME="${NAME// /%20}"
