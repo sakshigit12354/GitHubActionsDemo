@@ -90,8 +90,8 @@ on:
       - main  # Trigger the deployment when pushing to the main branch
 
 env:
-  SERVICES: ("MyService_API" "mockbin" "httpbin")
   NAME: "${{ env.APPDEVELOPERNAME }}"  
+
 jobs:
   service_contract:
     name: Create Contract 
@@ -107,7 +107,7 @@ jobs:
              done
          - name: Find Developer ID
            run: |
-             echo "New name: $NAME"
+             echo "New name: ${{ env.NAME }}"
              echo "Hello '$NAME'"
              echo "Hello ${NAME}"
 
