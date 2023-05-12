@@ -109,8 +109,9 @@ jobs:
              echo "Hello '$NAME'"
              echo "Hello ${NAME}"
 
-             RESPONSE=$(echo curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=Sakshi%20Singhal" -k)
-             echo "$RESPONSE"
+             RESPONSE=$(curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=Sakshi%20Singhal" -k)
+             any=1111111111
+             echo "$any"
              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
              echo "Developer ID: $DEV_ID"              
 
