@@ -103,6 +103,7 @@ jobs:
              for SERVICE in "${SERVICES[@]}"
              do
                echo $SERVICE
+               echo "Hello"
              done
 
 #       - name: Step 1
