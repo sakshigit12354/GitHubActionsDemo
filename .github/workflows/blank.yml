@@ -107,7 +107,10 @@ jobs:
              done
          - name: Find Developer ID
            run: |
-             RESPONSE=$(curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username='Sakshi Singhal'" -k)
+             NAME="${{ env.APPDEVELOPERNAME }}"
+             NAME="${NAME// /%20}"
+             echo "New name: $NAME"
+             RESPONSE=$(curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=Sakshi%20Singhal" -k)
              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
              echo "Developer ID: $DEV_ID"              
 
