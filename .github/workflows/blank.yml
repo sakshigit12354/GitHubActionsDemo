@@ -125,8 +125,8 @@ jobs:
           do
             echo "Hello"
             echo $SERVICE
-            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "anyyyy", "display_name": "'$SERVICE'"}}' | tr -d '\n')
-            curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/${SERVICE}/plugins -d "$p" -k
+            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "$SERVICE"}}' | tr -d '\n')
+            curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
           done
 
 
