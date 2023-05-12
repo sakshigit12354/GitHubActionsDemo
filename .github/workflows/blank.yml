@@ -89,25 +89,23 @@ on:
     branches:
       - main  # Trigger the deployment when pushing to the main branch
 
-env:
-  NAME: "${{ env.APPDEVELOPERNAME }}"  
-
 jobs:
   service_contract:
     name: Create Contract 
     if: ${{ vars.APPNAME }}
     runs-on: ubuntu-latest
     steps:
-         - name: Print Service
-           run: |
-             for SERVICE in "${SERVICES[@]}"
-             do
-               echo $SERVICE
-               echo "Hello"
-             done
+#          - name: Print Service
+#            run: |
+#              for SERVICE in "${SERVICES[@]}"
+#              do
+#                echo $SERVICE
+#                echo "Hello"
+#              done
          - name: Find Developer ID
            run: |
-             echo "New name: ${{ env.NAME }}"
+             NAME="${{ env.APPDEVELOPERNAME }}"
+             echo "New name: '$NAME'"
              echo "Hello '$NAME'"
              echo "Hello ${NAME}"
 
