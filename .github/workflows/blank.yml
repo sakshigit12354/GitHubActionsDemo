@@ -105,7 +105,16 @@ jobs:
                echo $SERVICE
                echo "Hello"
              done
+         - name: Find Developer ID
+           run: |
+             RESPONSE=$(curl -X GET https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=Sakshi Singhal)
+             echo $RESPONSE
 
+
+
+
+
+    
 #       - name: Step 1
 #         run: |
 #           echo ${{ vars.APPNAME }}
