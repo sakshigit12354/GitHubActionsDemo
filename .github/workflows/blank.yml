@@ -149,7 +149,7 @@ jobs:
     steps:
       - name: Select Services
         id: select_services
-        uses: technote-space/action-select@v1
+        uses: kentaro-m/action-select@v2.0.0
         with:
           prompt: 'Choose the services to apply contracts to (use space to select multiple):'
           options: ${{ join(steps.choose_services.outputs.services, '\n') }}
@@ -178,5 +178,6 @@ jobs:
             p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "'$SERVICE'"}}' | tr -d '\n')
             curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
           done
+
 
         
