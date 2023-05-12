@@ -103,6 +103,8 @@ on:
   push:
     branches:
       - main  # Trigger the deployment when pushing to the main branch
+env:
+  SERVICES: 'JSON_API XML_API'  # Set SERVICES as an environment variable
 
 jobs:
   service_contract:
@@ -118,8 +120,8 @@ jobs:
           DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
           echo "Developer ID: $DEV_ID"
       - name: Apply Multi Service Contracts 
+#         SERVICES=("JSON_API" "XML_API")
         run: |
-          SERVICES=("JSON_API" "XML_API")
           echo ${{ vars.APPNAME }}
           for SERVICE in "${SERVICES[@]}"
           do
