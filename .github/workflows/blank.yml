@@ -91,7 +91,7 @@ on:
 
 env:
   SERVICES: ("MyService_API" "mockbin" "httpbin")
-
+  NAME: "${{ env.APPDEVELOPERNAME }}"  
 jobs:
   service_contract:
     name: Create Contract 
@@ -107,7 +107,6 @@ jobs:
              done
          - name: Find Developer ID
            run: |
-             NAME="${{ env.APPDEVELOPERNAME }}"
              echo "New name: $NAME"
              echo "Hello '$NAME'"
              echo "Hello ${NAME}"
