@@ -98,17 +98,24 @@ jobs:
     if: ${{ vars.APPNAME }}
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1
-        run: |
-          echo ${{ vars.APPNAME }}
-          for SERVICE in "${SERVICES[@]}"
-          do
-            echo ${{ vars.APPNAME }}
-            echo $SERVICE
-            SERVICE_NAME=$(echo $SERVICE)
-            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "anyyyy", "display_name": "'$SERVICE_NAME'"}}' | tr -d '\n')
-            curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/${SERVICE_NAME}/plugins -d "$p" -k
-          done
+         - name: Print Services
+           run: |
+             for SERVICE in "${SERVICES[@]}"
+             do
+               echo $SERVICE
+             done
+
+#       - name: Step 1
+#         run: |
+#           echo ${{ vars.APPNAME }}
+#           for SERVICE in "${SERVICES[@]}"
+#           do
+#             echo ${{ vars.APPNAME }}
+#             echo $SERVICE
+#             SERVICE_NAME=$(echo $SERVICE)
+#             p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "anyyyy", "display_name": "'$SERVICE_NAME'"}}' | tr -d '\n')
+#             curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/${SERVICE_NAME}/plugins -d "$p" -k
+#           done
 
 
 
