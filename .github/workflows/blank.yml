@@ -98,7 +98,7 @@ jobs:
     if: ${{ vars.APPNAME }}
     runs-on: ubuntu-latest
     steps:
-         - name: Print Services
+         - name: Print Service
            run: |
              for SERVICE in "${SERVICES[@]}"
              do
