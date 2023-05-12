@@ -72,8 +72,10 @@ jobs:
              echo "Developer ID: $DEV_ID"              
 
       - name: Deploy to Kong
+        env:
+          DEVID: ${{ steps.find_developer_id.outputs.DEV_ID }}
         run: |
-          payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"13740635-14f5-4d12-9f0c-2e585f6ada2f\"}}" | tr -d '\n')
+          payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEVID\"}}" | tr -d '\n')
           curl --request POST \
             --url https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/applications \
             --header 'Content-Type: application/json' \
