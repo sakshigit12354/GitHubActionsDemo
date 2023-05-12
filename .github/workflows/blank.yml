@@ -119,7 +119,7 @@ jobs:
           echo "Developer ID: $DEV_ID"
       - name: Apply Multi Service Contracts 
         run: |
-          SERVICES=("MyService_API" "httpbin")
+          SERVICES=("JSON_API" "XML_API")
           echo ${{ vars.APPNAME }}
           for SERVICE in "${SERVICES[@]}"
           do
