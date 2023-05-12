@@ -111,7 +111,7 @@ jobs:
 
              RESPONSE=$(curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=Sakshi%20Singhal" -k)
              any="Sakshi Sakshi"
-             echo "${{ env.APPDEVELOPERNAME }}"
+             echo "${{ env.APPDEVELOPERID }}"
              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
              echo "Developer ID: $DEV_ID"              
 
