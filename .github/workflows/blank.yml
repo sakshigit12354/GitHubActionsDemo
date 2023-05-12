@@ -138,28 +138,28 @@ on:
   push:
     branches:
       - main  # Trigger the deployment when pushing to the main branch
-
 env:
   SERVICES: 'JSON_API XML_API'  # Set SERVICES as an environment variable
-
 jobs:
   choose_services:
     name: Choose Services
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        services: [$(curl -s http://localhost:8001/services | jq -r '.data[].name')]
     steps:
       - name: Select Services
         id: select_services
-        uses: kentaro-m/action-select@v2.0.0
+        uses: technote-space/action-select@v1
         with:
           prompt: 'Choose the services to apply contracts to (use space to select multiple):'
           options: ${{ join(steps.choose_services.outputs.services, '\n') }}
       - name: Set Services
-        run: echo "SERVICES=$(echo ${{ steps.select_services.outputs.selected }})" >> $GITHUB_ENV
+        run: echo "SERVICES=\"$${{ steps.select_services.outputs.selected }}\"" >> $GITHUB_ENV
   service_contract:
     name: Create Contract 
     if: ${{ vars.APPNAME }}
     runs-on: ubuntu-latest
-    needs: choose_services
     steps:
       - name: Find Developer ID
         run: |
@@ -169,15 +169,15 @@ jobs:
           DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
           echo "Developer ID: $DEV_ID"
       - name: Apply Multi Service Contracts 
+#         SERVICES=("JSON_API" "XML_API")
         run: |
           echo ${{ vars.APPNAME }}
-          for SERVICE in ${{ env.SERVICES }}
+          for SERVICE in ${SERVICES}
           do
             echo "Hello"
             echo $SERVICE
-            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "'$SERVICE'"}}' | tr -d '\n')
+            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "$SERVICE"}}' | tr -d '\n')
             curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
           done
 
 
-        
