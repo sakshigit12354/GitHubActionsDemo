@@ -123,7 +123,7 @@ jobs:
 #         SERVICES=("JSON_API" "XML_API")
         run: |
           echo ${{ vars.APPNAME }}
-          for SERVICE in "${SERVICES[@]}"
+          for SERVICE in ${SERVICES}
           do
             echo "Hello"
             echo $SERVICE
