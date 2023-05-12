@@ -105,9 +105,8 @@ jobs:
          - name: Find Developer ID
            run: |
              NAME="${{ vars.APPDEVELOPERNAME }}"
-             echo "New name: '$NAME'"
-             echo "Hello '$NAME'"
-             echo "Hello ${NAME}"
+             NAME="${NAME// /%20}"
+             echo "New name: $NAME"
 
              RESPONSE=$(curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=Sakshi%20Singhal" -k)
              any="Sakshi Sakshi"
