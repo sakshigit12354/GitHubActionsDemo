@@ -128,6 +128,7 @@ jobs:
           do
             echo $SERVICE
             p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": $SERVICE}}' | tr -d '\n')
+            p=$(echo "{\"name\": \"application-registration\", \"config\": {\"auto_approve\": false, \"description\": \"Your App description\", \"display_name\": \"$SERVICE\"}}" | tr -d '\n')
             curl -X POST https://54.184.107.169:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
           done
       - name: Get access token, Get service contracts and Activate service contracts
