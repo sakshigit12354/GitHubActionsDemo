@@ -149,6 +149,7 @@ jobs:
                    "id": "'"$ID"'"
                 }
               }'
+          done
 #       - name: Get access token, Get service contracts and Activate service contracts
 #         run: |
 #           ACCESS_TOKEN=$(curl -s -X POST \
