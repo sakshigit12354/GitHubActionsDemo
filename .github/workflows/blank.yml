@@ -114,7 +114,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install jq
-        run: sudo yum install -y jq
+        run: sudo yum install -y dnf
+      - name: Install jqaa
+        run: sudo dnf install -y jq
       - name: Find Developer ID
         run: |
           NAME="${{ vars.APPDEVELOPERNAME }}"
