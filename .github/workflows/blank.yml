@@ -147,7 +147,7 @@ jobs:
       - name: Apply Multi Service Contracts 
 #         SERVICES=("JSON_API" "XML_API")
         run: |
-          echo "$hello ${{hello}}"
+          echo '$hello ${{hello}}'
           echo ${{ vars.APPNAME }}
           for SERVICE in ${SERVICES}
           do
