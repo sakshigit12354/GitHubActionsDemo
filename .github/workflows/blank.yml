@@ -133,8 +133,6 @@ jobs:
             p=$(echo "{\"name\": \"application-registration\", \"config\": {\"auto_approve\": false, \"description\": \"Your App description\", \"display_name\": \"$SERVICE\"}}" | tr -d '\n')
             curl -X POST https://54.184.107.169:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
             SERVICE_ID=$(curl -s -k -X GET "https://54.184.107.169:8444/services/$SERVICE" | jq -r '.id')
-            echo $SERVICE_ID
-            echo "jjjjjjjjjjjjjjjjj"
             if [ -z "$SERVICE_IDS" ]; then
               SERVICE_IDS="$SERVICE_ID"
             else
@@ -142,6 +140,15 @@ jobs:
             fi
           done
           echo "Service IDs: $SERVICE_IDS"
+          IFS=',' read -ra SERVICE_IDS <<< "$SERVICE_IDS"
+          for ID in "${SERVICE_IDS[@]}"; do
+            curl --location "https://54.184.107.169:8444/applications/449a09bb-a9ca-4d5d-a824-9ce9cedf8d8d/application_instances" \
+             --header 'Content-Type: application/json' \
+             --data '{
+                "service": {
+                   "id": "'"$ID"'"
+                }
+              }'
 #       - name: Get access token, Get service contracts and Activate service contracts
 #         run: |
 #           ACCESS_TOKEN=$(curl -s -X POST \
