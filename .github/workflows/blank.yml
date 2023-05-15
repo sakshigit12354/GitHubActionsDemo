@@ -17,7 +17,7 @@ jobs:
           - qa
           
     env:
-      FOLDER_PATH: "kongspec"
+      FOLDER_PATH: "kong"
     steps:
     - name: Checkout Code  # Checkout the code from the repository
       uses: actions/checkout@v2
@@ -78,4 +78,4 @@ jobs:
          do
            state="$state -s $file_path "
          done  
-         deck sync $state --kong-addr http://34.125.43.26:8001 --workspace ${{ matrix.workspace }}
+         deck sync $state --kong-addr http://54.184.107.169:8001 --workspace ${{ matrix.workspace }}
