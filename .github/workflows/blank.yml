@@ -148,7 +148,7 @@ jobs:
                 "service": {
                    "id": "'"$ID"'"
                 }
-              }'
+              }' -k
           done
 #       - name: Get access token, Get service contracts and Activate service contracts
 #         run: |
