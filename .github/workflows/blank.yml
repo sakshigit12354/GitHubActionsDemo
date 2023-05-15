@@ -106,7 +106,6 @@ on:
       - main  # Trigger the deployment when pushing to the main branch
 env:
   SERVICES: 'MyService_API httpbin mockbin'  # Set SERVICES as an environment variable
-  APP_ID: ''
 
 jobs:
   service_contract:
