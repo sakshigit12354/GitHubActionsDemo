@@ -143,13 +143,16 @@ jobs:
              echo $appid  
              app_id=$(echo "$appid" | jq -r '.id')
              echo "Application ID: $app_id"
-             echo "application=$app_id"
+             echo "application=$app_id" >> $GITHUB_ENV
+             echo "GITHUB_SHA_SHORT=$(echo $app_id )" >> $GITHUB_ENV
+
 
              export hello="rakesh"
 
       - name: Apply Multi Service Contracts 
 #         SERVICES=("JSON_API" "XML_API")
         run: |
+          echo ${{ env.GITHUB_SHA_SHORT }}
           echo ${{ env.application }}         
           echo ${{ vars.APPNAME }}
           for SERVICE in ${SERVICES}
