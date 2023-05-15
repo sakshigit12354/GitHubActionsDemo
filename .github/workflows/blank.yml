@@ -47,7 +47,7 @@ jobs:
 
     - name: Test OpenAPI Spec
       run: |
-          ./inso run test  my-spec-git.yaml --env New Suite
+          ./inso run test "my-spec-git.yaml" --env "New Suite"
            
       
 #     - name: Test the Inso OpenApSpec
