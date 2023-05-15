@@ -139,7 +139,8 @@ jobs:
                --url https://54.184.107.169:8444/applications \
                --header 'Content-Type: application/json' \
                --data "$payload" \
-               -k)           
+               -k)    
+             echo $appid  
              app_id=$(echo "$appid" | jq -r '.id')
              echo "Application ID: $app_id"
              export hello="rakesh"
