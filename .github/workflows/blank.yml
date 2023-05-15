@@ -140,8 +140,8 @@ jobs:
             fi
           done
           echo "Service IDs: $SERVICE_IDS"
-          IFS=',' read -ra SERVICE_IDS <<< "$SERVICE_IDS"
-          for ID in "${SERVICE_IDS[@]}"; do
+          IFS=',' read -ra SERVICE_IDSs <<< "$SERVICE_IDS"
+          for ID in "${SERVICE_IDSs[@]}"; do
             curl --location "https://54.184.107.169:8444/applications/449a09bb-a9ca-4d5d-a824-9ce9cedf8d8d/application_instances" \
              --header 'Content-Type: application/json' \
              --data '{
