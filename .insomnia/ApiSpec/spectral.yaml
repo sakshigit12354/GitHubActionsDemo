@@ -1,0 +1,42 @@
+extends: spectral:oas
+rules:
+  info-contact:
+    description: Info object must have a "contact" object.
+    recommended: true
+    severity: error
+    given: $.info
+    then:
+      field: contact
+      function: truthy
+  info-description:
+    description: Info object must have a "description" object.
+    recommended: true
+    severity: error
+    given: $.info
+    then:
+      field: description
+      function: truthy          
+  operation-operationId:
+    description: Operation "description" must be present and non-empty string.
+    recommended: true
+    severity: error
+    given: $.paths..[?(@.operationId === undefined)] 
+    then:
+      field: description
+      function: truthy   
+  operation-tags:
+    description: Operation must have non-empty "tags" array.
+    recommended: true
+    severity: error
+    given: $.paths..[?(@.tags === undefined)]
+    then:
+      field: tags
+      function: truthy 
+  operation-description:
+    description: Operation "description" must be present and non-empty string
+    recommended: true
+    severity: error
+    given: $.paths...description
+    then:
+      field: description
+      function: truthy
