@@ -106,6 +106,7 @@ on:
       - main  # Trigger the deployment when pushing to the main branch
 env:
   SERVICES: 'MyService_API httpbin mockbin'  # Set SERVICES as an environment variable
+  APP_ID: ''
 
 jobs:
   service_contract:
@@ -122,6 +123,27 @@ jobs:
           RESPONSE=$(curl -X GET "https://54.184.107.169:8444/developers?username=$NAME" -k)
           DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
           echo "Developer ID: $DEV_ID"
+  application_automation:  # Publish the API to the dev portal
+    name: Create Apps for developers 
+    runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
+    steps:
+      - name: Find Developer ID and deploy to kong
+        run: |
+             NAME="${{ vars.APPDEVELOPERNAME }}"
+             NAME="${NAME// /%20}"
+             RESPONSE=$(curl -X GET "https://54.184.107.169:8444/developers?username=$NAME" -k)
+             DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
+             echo "Developer ID: $DEV_ID"   
+             payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEV_ID\"}}" | tr -d '\n')
+             appid=$(curl --request POST \
+               --url https://54.184.107.169:8444/applications \
+               --header 'Content-Type: application/json' \
+               --data "$payload" \
+               -k)           
+             app_id=$(echo "$appid" | jq -r '.id')
+             echo "Application ID: $app_id"
+             echo "::set-env name=APP_ID::$app_id"
+
       - name: Apply Multi Service Contracts 
 #         SERVICES=("JSON_API" "XML_API")
         run: |
@@ -142,7 +164,7 @@ jobs:
           echo "Service IDs: $SERVICE_IDS"
           IFS=',' read -ra SERVICE_IDSs <<< "$SERVICE_IDS"
           for ID in "${SERVICE_IDSs[@]}"; do
-            curl --location "https://54.184.107.169:8444/applications/449a09bb-a9ca-4d5d-a824-9ce9cedf8d8d/application_instances" \
+            curl --location "https://54.184.107.169:8444/applications/$APP_ID/application_instances" \
              --header 'Content-Type: application/json' \
              --data '{
                 "service": {
@@ -150,23 +172,5 @@ jobs:
                 }
               }' -k
           done
-#       - name: Get access token, Get service contracts and Activate service contracts
-#         run: |
-#           ACCESS_TOKEN=$(curl -s -X POST \
-#             -H 'Content-Type: application/x-www-form-urlencoded' \
-#             -d 'grant_type=client_credentials&client_id=gi08FyjBRuBVtWkH0GXp9aqKeK26DxMK&client_secret=1l2YX6Kvv9rnHU8L8rqrvI9Xbqr9LG2r' \
-#             'https://54.184.107.169:8443/oauth2/token' \
-#             | jq -r '.access_token' -k)
-#           echo $ACCESS_TOKEN
-#           echo "My Wishhhhhhhhhh"
-#           SERVICE_CONTRACTS=$(curl -s -X GET \
-#             -H "Authorization: Bearer $ACCESS_TOKEN" \
-#             'https://54.184.107.169:8443/api/service-contracts' \
-#             | jq -r '.[] | .id')
-#           for CONTRACT_ID in $SERVICE_CONTRACTS; do
-#             curl -s -X POST \
-#               -H "Authorization: Bearer $ACCESS_TOKEN" \
-#               "https://54.184.107.169:8443/api/service-contracts/$CONTRACT_ID/activate"
-#           done
 
 
