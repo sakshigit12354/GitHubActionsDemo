@@ -1,0 +1,43 @@
+_id: spc_6347346988a5427f9f253fa022c4da8c
+type: ApiSpec
+parentId: wrk_4ea9869f625146709fbd413e28c22cbc
+modified: 1684158605381
+created: 1684158577956
+fileName: my-spec-git.yaml
+contents: |-
+  openapi: 3.0.0
+  info:
+    title: Users API
+    version: 1.0.0
+  servers:
+    - url: https://httpbin.org
+  paths:
+    /get:
+      get:
+        summary: Retrieve user data
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UsersResponse'
+  components:
+    schemas:
+      UsersResponse:
+        type: object
+        properties:
+          users:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+      User:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          email:
+            type: string
+contentType: yaml
