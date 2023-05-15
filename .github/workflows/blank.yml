@@ -1,136 +1,136 @@
-name: Demo to Delpoy OAS to Kong # Specify the name of the deploymen
-
-on:
-  push:
-    branches:
-      - main  # Trigger the deployment when pushing to the main branch
-
-jobs:
-  OAS_To_KONG:
-    runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
-
-    steps:
-    - name: Checkout Code  # Checkout the code from the repository
-      uses: actions/checkout@v2
-
-    - name: Install Insomnia CLI  # Install Insomnia CLI for linting and generating Kong configuration
-      run: |
-         wget https://github.com/Kong/insomnia/releases/download/lib%403.14.0/inso-linux-3.14.0.tar.xz
-         tar -xf inso-linux-3.14.0.tar.xz
-
-    - name: Lint OpenAPI Spec  # Lint the OpenAPI spec using Insomnia CLI
-      run: ./inso lint spec api.yaml
-    - name: Generate kong.yaml  # Generate Kong configuration in declarative format
-      run: ./inso generate config api.yaml --type declarative -o kong_gen.yaml --kongVersion 3.0
-    - name: open kong.yaml  # Display the contents of the generated Kong configuration
-      run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
-    - name: install deck CLI  # Install deck CLI for syncing Kong configuration
-      run: |
-        curl -sL https://github.com/kong/deck/releases/download/v1.17.2/deck_1.17.2_linux_amd64.tar.gz -o deck.tar.gz
-        tar -xf deck.tar.gz -C /tmp 
-        sudo cp /tmp/deck /usr/local/bin/
-
-    - name: check  # Validate the Kong configuration using deck CLI
-      run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
-
-    - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
-      run: |
-          deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong_gen.yaml --output-file new-kong.yaml
-    - name: open new-kong.yaml  # Display the contents of the generated Kong configuration
-      run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/new-kong.yaml
-
-    - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
-      run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
-  publish-customer-api-to-portal:  # Publish the API to the dev portal
-    name: Publish OAS to dev portal
-    needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
-    runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
-    steps:
-      - name: Checkout branch  # Checkout the branch from the repository
-        uses: actions/checkout@v2
-      - name: Install NodeJs  # Install Node.js for running the dev portal CLI
-        uses: actions/setup-node@v3
-      - name: Install kon-dev-portal-cli  # Install dev portal CLI
-        run: npm install -g kong-portal-cli
-      - name: Deploy to dev portal
-        run: |          
-          portal deploy --preserve default -D
-        env:
-          KONG_ADMIN_URL: ${{ secrets.KONG_ADMIN_ADDR }}
-   
-  application_automation:  # Publish the API to the dev portal
-    name: Create Apps for developers 
-    needs: publish-customer-api-to-portal  # Make sure the OAS_To_KONG job is completed before running this job
-    runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
-    steps:
-      - name: Find Developer ID and deploy to kong
-        run: |
-             NAME="${{ vars.APPDEVELOPERNAME }}"
-             NAME="${NAME// /%20}"
-             RESPONSE=$(curl -X GET "https://54.184.107.169:8444/developers?username=$NAME" -k)
-             DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
-             echo "Developer ID: $DEV_ID"   
-             payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEV_ID\"}}" | tr -d '\n')
-             curl --request POST \
-               --url https://54.184.107.169:8444/applications \
-               --header 'Content-Type: application/json' \
-               --data "$payload" \
-               -k           
-
-#       - name: Deploy to Kong
-#         env:
-#           DEVID: ${{ steps.find_developer_id.outputs.DEV_ID }}
-#         run: |
-#           payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEVID\"}}" | tr -d '\n')
-#           curl --request POST \
-#             --url https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/applications \
-#             --header 'Content-Type: application/json' \
-#             --data "$payload" \
-#             -k
-
-  service_contract:
-    name: Create Contract 
-    needs: application_automation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Step 1
-        run: |
-            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "MyService_API"}}' | tr -d '\n')
-            curl -X POST https://54.184.107.169:8444/services/MyService_API/plugins     -H "Content-Type: application/json"     -d "$p" -k       
-
-# name: Demo to Deploy OAS to Kong # Specify the name of the deployment
+# name: Demo to Delpoy OAS to Kong # Specify the name of the deploymen
 
 # on:
 #   push:
 #     branches:
 #       - main  # Trigger the deployment when pushing to the main branch
-# env:
-#   SERVICES: 'JSON_API XML_API'  # Set SERVICES as an environment variable
 
 # jobs:
+#   OAS_To_KONG:
+#     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
+
+#     steps:
+#     - name: Checkout Code  # Checkout the code from the repository
+#       uses: actions/checkout@v2
+
+#     - name: Install Insomnia CLI  # Install Insomnia CLI for linting and generating Kong configuration
+#       run: |
+#          wget https://github.com/Kong/insomnia/releases/download/lib%403.14.0/inso-linux-3.14.0.tar.xz
+#          tar -xf inso-linux-3.14.0.tar.xz
+
+#     - name: Lint OpenAPI Spec  # Lint the OpenAPI spec using Insomnia CLI
+#       run: ./inso lint spec api.yaml
+#     - name: Generate kong.yaml  # Generate Kong configuration in declarative format
+#       run: ./inso generate config api.yaml --type declarative -o kong_gen.yaml --kongVersion 3.0
+#     - name: open kong.yaml  # Display the contents of the generated Kong configuration
+#       run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
+#     - name: install deck CLI  # Install deck CLI for syncing Kong configuration
+#       run: |
+#         curl -sL https://github.com/kong/deck/releases/download/v1.17.2/deck_1.17.2_linux_amd64.tar.gz -o deck.tar.gz
+#         tar -xf deck.tar.gz -C /tmp 
+#         sudo cp /tmp/deck /usr/local/bin/
+
+#     - name: check  # Validate the Kong configuration using deck CLI
+#       run: deck validate -s /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/kong_gen.yaml
+
+#     - name: Convert kong declarative  # Convert the Kong configuration to version 3.x using deck CLI
+#       run: |
+#           deck convert --from kong-gateway-2.x --to kong-gateway-3.x --input-file kong_gen.yaml --output-file new-kong.yaml
+#     - name: open new-kong.yaml  # Display the contents of the generated Kong configuration
+#       run: cat /home/runner/work/GitHubActionsDemo/GitHubActionsDemo/new-kong.yaml
+
+#     - name: Deploy to Kong  # Sync the Kong configuration to Kong API Gateway
+#       run: deck sync -s new-kong.yaml --kong-addr ${{ secrets.KONG_ADMIN_ADDR }} --tls-skip-verify
+#   publish-customer-api-to-portal:  # Publish the API to the dev portal
+#     name: Publish OAS to dev portal
+#     needs: OAS_To_KONG  # Make sure the OAS_To_KONG job is completed before running this job
+#     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
+#     steps:
+#       - name: Checkout branch  # Checkout the branch from the repository
+#         uses: actions/checkout@v2
+#       - name: Install NodeJs  # Install Node.js for running the dev portal CLI
+#         uses: actions/setup-node@v3
+#       - name: Install kon-dev-portal-cli  # Install dev portal CLI
+#         run: npm install -g kong-portal-cli
+#       - name: Deploy to dev portal
+#         run: |          
+#           portal deploy --preserve default -D
+#         env:
+#           KONG_ADMIN_URL: ${{ secrets.KONG_ADMIN_ADDR }}
+   
+#   application_automation:  # Publish the API to the dev portal
+#     name: Create Apps for developers 
+#     needs: publish-customer-api-to-portal  # Make sure the OAS_To_KONG job is completed before running this job
+#     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
+#     steps:
+#       - name: Find Developer ID and deploy to kong
+#         run: |
+#              NAME="${{ vars.APPDEVELOPERNAME }}"
+#              NAME="${NAME// /%20}"
+#              RESPONSE=$(curl -X GET "https://54.184.107.169:8444/developers?username=$NAME" -k)
+#              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
+#              echo "Developer ID: $DEV_ID"   
+#              payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEV_ID\"}}" | tr -d '\n')
+#              curl --request POST \
+#                --url https://54.184.107.169:8444/applications \
+#                --header 'Content-Type: application/json' \
+#                --data "$payload" \
+#                -k           
+
+# #       - name: Deploy to Kong
+# #         env:
+# #           DEVID: ${{ steps.find_developer_id.outputs.DEV_ID }}
+# #         run: |
+# #           payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEVID\"}}" | tr -d '\n')
+# #           curl --request POST \
+# #             --url https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/applications \
+# #             --header 'Content-Type: application/json' \
+# #             --data "$payload" \
+# #             -k
+
 #   service_contract:
 #     name: Create Contract 
-#     if: ${{ vars.APPNAME }}
+#     needs: application_automation
 #     runs-on: ubuntu-latest
 #     steps:
-#       - name: Find Developer ID
+#       - name: Step 1
 #         run: |
-#           NAME="${{ vars.APPDEVELOPERNAME }}"
-#           NAME="${NAME// /%20}"
-#           RESPONSE=$(curl -X GET "https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/developers?username=$NAME" -k)
-#           DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
-#           echo "Developer ID: $DEV_ID"
-#       - name: Apply Multi Service Contracts 
-# #         SERVICES=("JSON_API" "XML_API")
-#         run: |
-#           echo ${{ vars.APPNAME }}
-#           for SERVICE in ${SERVICES}
-#           do
-#             echo "Hello"
-#             echo $SERVICE
-#             p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "$SERVICE"}}' | tr -d '\n')
-#             curl -X POST https://ec2-54-244-204-148.us-west-2.compute.amazonaws.com:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
-#           done
+#             p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "MyService_API"}}' | tr -d '\n')
+#             curl -X POST https://54.184.107.169:8444/services/MyService_API/plugins     -H "Content-Type: application/json"     -d "$p" -k       
+
+name: Demo to Deploy OAS to Kong # Specify the name of the deployment
+
+on:
+  push:
+    branches:
+      - main  # Trigger the deployment when pushing to the main branch
+env:
+  SERVICES: 'MyService_API httpbin'  # Set SERVICES as an environment variable
+
+jobs:
+  service_contract:
+    name: Create Contract 
+    if: ${{ vars.APPNAME }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Developer ID
+        run: |
+          NAME="${{ vars.APPDEVELOPERNAME }}"
+          NAME="${NAME// /%20}"
+          RESPONSE=$(curl -X GET "https://54.184.107.169:8444/developers?username=$NAME" -k)
+          DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
+          echo "Developer ID: $DEV_ID"
+      - name: Apply Multi Service Contracts 
+#         SERVICES=("JSON_API" "XML_API")
+        run: |
+          echo ${{ vars.APPNAME }}
+          for SERVICE in ${SERVICES}
+          do
+            echo "Hello"
+            echo $SERVICE
+            p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": "$SERVICE"}}' | tr -d '\n')
+            curl -X POST https://54.184.107.169:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
+          done
 
 
 
