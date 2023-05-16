@@ -1,9 +1,9 @@
-name: Demo to Delpoy OAS to Kong # Specify the name of the deployment
+name: Demo to Delpoy OAS to Kong # Specify the name of the deployme
 on:
   push:
     branches:
-      - main  # Trigger the deployment when pushing to the main branc
-#j
+      - dev  # Trigger the deployment when pushing to the main branch
+
 jobs:
   OAS_To_KONG:
     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
@@ -33,24 +33,37 @@ jobs:
     - name: Installing inso
       run:  npm install -g insomnia
       
+#     - name: Lint OpenAPI Spec
+#       run: |
+#          for file_path in $FOLDER_PATH/*
+#          do
+#           ./inso lint spec ./$file_path
+#          done
+
+
     - name: Lint OpenAPI Spec
       run: |
-         for file_path in $FOLDER_PATH/*
-         do
-          ./inso lint spec ./$file_path
-         done
+          ./inso lint spec my-spec-git.yaml
 
+    - name: Test OpenAPI Spec
+      run: |
+          ./inso run test "my-spec-git.yaml" --env "New Suite"
            
       
 #     - name: Test the Inso OpenApSpec
 #       run: ./inso run test "ApiActionDemo"
       
+#     - name: Generate Kong configuration in declarative format
+#       run: |
+#          for file_path in $FOLDER_PATH/*
+#          do
+#            ./inso generate config $file_path --type declarative -o $file_path --kongVersion 3
+#          done
+
     - name: Generate Kong configuration in declarative format
       run: |
-         for file_path in $FOLDER_PATH/*
-         do
-           ./inso generate config $file_path --type declarative -o $file_path --kongVersion 3
-         done
+         ./inso generate config my-spec-git.yaml --type declarative -o kong.yaml --kongVersion 3
+
 #     - name: open kong.yaml  # Display the contents of the generated Kong configuration
 #       run: cat ./$file_path
     - name: install deck CLI  # Install deck CLI for syncing Kong configuration
