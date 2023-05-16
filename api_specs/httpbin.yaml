@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: HttpBin GET API
+  version: 1.0.0
+  description: This is Mock API to get Mock Massage
+  contact:
+    email: rakesh.kumawat@neosalpha.com
+servers:
+  - url: https://rakeshkumawat-eval-test.apigee.net
+tags:
+  - name: get
+    description: static Message from backend
+paths:
+  /httpbin/get:
+    get:
+      tags:
+        - get
+      operationId: getMessage
+      description: get Static Message Response
+      summary: Get Message
+      responses:
+        '200':
+          description: OK
