@@ -41,7 +41,8 @@ jobs:
       
 
     - name: Deploy to Kong
-      run: deck sync -s kong.yaml --kong-addr https://34.219.65.23:8444 --header "Authorization:Bearer sakshi" --tls-skip-verify
+      run: KONG_ADMIN_TOKEN="sakshi" deck sync -s kong.yaml --kong-addr https://34.219.65.23:8444 --tls-skip-verify
+
 
     - name: Integration Testing
       run: ./inso run test
