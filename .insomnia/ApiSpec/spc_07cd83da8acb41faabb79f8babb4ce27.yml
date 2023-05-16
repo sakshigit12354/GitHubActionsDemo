@@ -1,0 +1,31 @@
+_id: spc_07cd83da8acb41faabb79f8babb4ce27
+type: ApiSpec
+parentId: wrk_6b23976c0d194c1c9c3deae674526725
+modified: 1684245753709
+created: 1684245717464
+fileName: API.yaml
+contents: |-
+  openapi: 3.0.0
+  info:
+    title: HttpBin GET API
+    version: 1.0.0
+    description: This is Mock API to get Mock Massage
+    contact:
+      email: rakesh.kumawat@neosalpha.com
+  servers:
+    - url: https://rakeshkumawat-eval-test.apigee.net
+  tags:
+    - name: get
+      description: static Message from backend
+  paths:
+    /httpbin/get:
+      get:
+        tags:
+          - get
+        operationId: getMessage
+        description: get Static Message Response
+        summary: Get Message
+        responses:
+          '200':
+            description: OK
+contentType: yaml

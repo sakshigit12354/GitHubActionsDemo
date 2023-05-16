@@ -1,0 +1,12 @@
+_id: ut_6d7bac5d359f47fc9b2049cae0f96c1e
+type: UnitTest
+parentId: uts_ce5a87fc541048eea191a6debd763ea7
+modified: 1684246846601
+created: 1684246596088
+requestId: req_ba725f3edc6b419ca1e69dd9c9600b7a
+name: "Sucess with Queryparam "
+code: |-
+  const response = await insomnia.send();
+  const body = JSON.parse(response.data);
+  expect(response.status).to.equal(200);
+  expect(body.args.name).to.equal("Rakesh");

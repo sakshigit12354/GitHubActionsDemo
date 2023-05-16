@@ -1,0 +1,21 @@
+_id: req_5c4d6ae7b37a402fb3d44a822dd2fa87
+type: Request
+parentId: wrk_6b23976c0d194c1c9c3deae674526725
+modified: 1684246351773
+created: 1684246329272
+url: "{{ base_url }}/httpbin/get"
+name: Get Message
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1684246329272
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

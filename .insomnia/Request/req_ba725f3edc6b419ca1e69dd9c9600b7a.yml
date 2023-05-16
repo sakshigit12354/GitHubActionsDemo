@@ -1,0 +1,21 @@
+_id: req_ba725f3edc6b419ca1e69dd9c9600b7a
+type: Request
+parentId: wrk_6b23976c0d194c1c9c3deae674526725
+modified: 1684246513897
+created: 1684246481783
+url: "{{ _.base_url }}/httpbin/get?name=Rakesh"
+name: Get Message with Payload
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1684246481783
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

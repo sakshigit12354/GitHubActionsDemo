@@ -1,0 +1,21 @@
+_id: req_2fba67d389ce4feb9ccef12a0ba3bbb8
+type: Request
+parentId: wrk_6b23976c0d194c1c9c3deae674526725
+modified: 1684246772893
+created: 1684246366231
+url: "{{ _.base_url }}/httpbin/get/notfound"
+name: Get Message Invalid Request
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1684246366231
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

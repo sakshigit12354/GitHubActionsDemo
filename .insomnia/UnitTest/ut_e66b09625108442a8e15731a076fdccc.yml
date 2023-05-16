@@ -1,0 +1,10 @@
+_id: ut_e66b09625108442a8e15731a076fdccc
+type: UnitTest
+parentId: uts_ce5a87fc541048eea191a6debd763ea7
+modified: 1684246866679
+created: 1684246648712
+requestId: req_2fba67d389ce4feb9ccef12a0ba3bbb8
+name: Sucess case with error
+code: |-
+  const response1 = await insomnia.send();
+  expect(response1.status).to.equal(404);
