@@ -130,7 +130,7 @@ jobs:
         run: |
              NAME="${{ vars.APPDEVELOPERNAME }}"
              NAME="${NAME// /%20}"
-             RESPONSE=$(curl -X GET "https://34.219.65.23:8444/developers?username=$NAME" -k)
+             RESPONSE=$(curl -X GET "https://34.219.65.23:8444/developers?username=$NAME" -H "kong-admin-token:sakshi"-k)
              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
              echo "Developer ID: $DEV_ID"   
              payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEV_ID\"}}" | tr -d '\n')
@@ -138,7 +138,7 @@ jobs:
                --url https://34.219.65.23:8444/applications \
                --header 'Content-Type: application/json' \
                --data "$payload" \
-               -k)    
+               -k -H "kong-admin-token:sakshi")    
              echo $appid  
              app_id=$(echo "$appid" | jq -r '.id')
              echo "Application ID: $app_id"
@@ -154,8 +154,8 @@ jobs:
             echo $SERVICE
             p=$(echo '{"name": "application-registration", "config": {"auto_approve": false, "description": "Your App description", "display_name": $SERVICE}}' | tr -d '\n')
             p=$(echo "{\"name\": \"application-registration\", \"config\": {\"auto_approve\": false, \"description\": \"Your App description\", \"display_name\": \"$SERVICE\"}}" | tr -d '\n')
-            curl -X POST https://34.219.65.23:8444/services/$SERVICE/plugins     -H "Content-Type: application/json"     -d "$p" -k       
-            SERVICE_ID=$(curl -s -k -X GET "https://34.219.65.23:8444/services/$SERVICE" | jq -r '.id')
+            curl -X POST https://34.219.65.23:8444/services/$SERVICE/plugins     -H "Content-Type: application/json" -H "kong-admin-token:sakshi" -d "$p" -k       
+            SERVICE_ID=$(curl -s -k -X GET "https://34.219.65.23:8444/services/$SERVICE" -H "kong-admin-token:sakshi" | jq -r '.id')
             if [ -z "$SERVICE_IDS" ]; then
               SERVICE_IDS="$SERVICE_ID"
             else
@@ -166,12 +166,12 @@ jobs:
           IFS=',' read -ra SERVICE_IDSs <<< "$SERVICE_IDS"
           for ID in "${SERVICE_IDSs[@]}"; do
             curl --location "https://34.219.65.23:8444/applications/${{ env.application }}/application_instances" \
-             --header 'Content-Type: application/json' \
+             --header 'Content-Type: application/json' -H "kong-admin-token:sakshi" \
              --data '{
                 "service": {
                    "id": "'"$ID"'"
                 }
-              }' -k
+              }' -k 
           done
 
 
