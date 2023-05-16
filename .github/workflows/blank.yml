@@ -42,7 +42,7 @@ jobs:
 
     - name: Deploy to Kong
       run: deck sync -s kong.yaml --kong-addr https://34.219.65.23:8444 --header "kong-admin-token:sakshi" --tls-skip-verify
-     
+
     - name: Integration Testing
       run: ./inso run test
       
