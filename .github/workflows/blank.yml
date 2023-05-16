@@ -2,7 +2,7 @@ name: Demo to Delpoy OAS to Kong # Specify the name of the deployment
 on:
   push:
     branches:
-      - main  # Trigger the deployment when pushing to the main branch
+      - major  # Trigger the deployment when pushing to the main branch
 
 jobs:
   OAS_To_KONG:
