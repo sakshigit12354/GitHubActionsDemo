@@ -1,4 +1,4 @@
-name: Demo to Deploy OAS to Kong # Specify the name of the deployment
+name: Demo to Deploy OAS to Kong - Test1 # Specify the name of the deployment
 
 on:
   push:
