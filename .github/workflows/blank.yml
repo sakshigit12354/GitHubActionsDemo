@@ -23,7 +23,7 @@ jobs:
         run: |
              NAME="${{ vars.APPDEVELOPERNAME }}"
              NAME="${NAME// /%20}"
-             RESPONSE=$(curl -X GET "https://65.2.9.170:8444/developers?username=$NAME" --header "kong-admin-token:password" -k)
+             RESPONSE=$(curl -X GET "https://65.2.9.170:8444/developers/$NAME" --header "kong-admin-token:password" -k)
              echo $RESPONSE
              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
              echo "Developer ID: $DEV_ID"   
