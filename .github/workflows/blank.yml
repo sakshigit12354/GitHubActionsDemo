@@ -16,19 +16,19 @@ jobs:
         run: sudo apt install -y jq
 
   application_automation:  # Publish the Apps to the dev portal
-    name: Create App for developer
+    name: Automating Application Development for developer
     runs-on: ubuntu-latest  # Use Ubuntu as the operating system for the job
     steps:
-      - name: Find Developer ID and Create App 
+      - name: Finds Developer ID and Create App 
         run: |
              NAME="${{ vars.APPDEVELOPERNAME }}"
              NAME="${NAME// /%20}"
-             RESPONSE=$(curl -X GET "https://34.219.65.23:8444/developers?username=$NAME" --header "kong-admin-token:sakshi" -k)
+             RESPONSE=$(curl -X GET "https://34.221.232.248:8444/developers?username=$NAME" --header "kong-admin-token:sakshi" -k)
              DEV_ID=$(echo "$RESPONSE" | jq -r '.data[0].id')
              echo "Developer ID: $DEV_ID"   
              payload=$(echo "{\"name\": \"${{ vars.APPNAME }}\", \"redirect_uri\": \"${{ vars.APPREDIRECT }}\", \"developer\": {\"id\": \"$DEV_ID\"}}" | tr -d '\n')
              appid=$(curl --request POST \
-               --url https://34.219.65.23:8444/applications \
+               --url https://34.221.232.248:8444/applications \
                --header 'Content-Type: application/json' \
                --data "$payload" \
                --header "kong-admin-token:sakshi" -k)    
@@ -45,8 +45,8 @@ jobs:
           do
             echo $SERVICE
             p=$(echo "{\"name\": \"application-registration\", \"config\": {\"auto_approve\": false, \"description\": \"Your App description\", \"display_name\": \"$SERVICE\"}}" | tr -d '\n')
-            curl -X POST https://34.219.65.23:8444/services/$SERVICE/plugins --header "Content-Type: application/json" --header "kong-admin-token:sakshi" -d "$p" -k       
-            SERVICE_ID=$(curl -s -k -X GET "https://34.219.65.23:8444/services/$SERVICE" --header "kong-admin-token:sakshi" | jq -r '.id')
+            curl -X POST https://34.221.232.248:8444/services/$SERVICE/plugins --header "Content-Type: application/json" --header "kong-admin-token:sakshi" -d "$p" -k       
+            SERVICE_ID=$(curl -s -k -X GET "https://34.221.232.248:8444/services/$SERVICE" --header "kong-admin-token:sakshi" | jq -r '.id')
             if [ -z "$SERVICE_IDS" ]; then
               SERVICE_IDS="$SERVICE_ID"
             else
@@ -56,7 +56,7 @@ jobs:
           echo "Service IDs: $SERVICE_IDS"
           IFS=',' read -ra SERVICE_IDSs <<< "$SERVICE_IDS"
           for ID in "${SERVICE_IDSs[@]}"; do
-            curl --location "https://34.219.65.23:8444/applications/${{ env.application }}/application_instances" \
+            curl --location "https://34.221.232.248:8444/applications/${{ env.application }}/application_instances" \
              --header 'Content-Type: application/json' --header "kong-admin-token:sakshi" \
              --data '{
                 "service": {
